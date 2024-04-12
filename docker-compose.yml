@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  frontend:
+    env_file:
+      - ./.env
+    build: ./frontend_app
+    image: frontend
+    environment:
+      - FRONTEND_IP=$FRONTEND_IP     
+    ports:
+      - $FRONTEND_LOCAL_PORT:$FRONTEND_DOCKER_PORT
+    volumes:
+      - ./frontend_app:/usr/share/nginx/html    
+    networks:
+      - frontend_backend_network
+    depends_on:
+      - backend
+
+networks:
+  frontend_backend_network:
+    driver: bridge
