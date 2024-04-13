@@ -7,15 +7,27 @@ services:
     build: ./frontend_app
     image: frontend
     environment:
-      - FRONTEND_IP=$FRONTEND_IP     
+      - FRONTEND_IP=$FRONTEND_IP
     ports:
       - $FRONTEND_LOCAL_PORT:$FRONTEND_DOCKER_PORT
     volumes:
-      - ./frontend_app:/usr/share/nginx/html    
+      - ./frontend_app:/usr/share/nginx/html
     networks:
       - frontend_backend_network
     depends_on:
       - backend
+
+  backend:
+    env_file:
+      - ./.env
+    build: ./backend_app
+    image: backend
+    environment:
+      - BACKEND_IP=$BACKEND_IP
+    ports:
+      - $BACKEND_LOCAL_PORT:$BACKEND_DOCKER_PORT
+    networks:
+      - frontend_backend_network
 
 networks:
   frontend_backend_network:
