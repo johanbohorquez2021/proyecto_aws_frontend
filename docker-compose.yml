@@ -5,7 +5,7 @@ services:
     env_file:
       - ./.env
     build: ./frontend_app
-    image: frontend
+    image: frontend-app
     environment:
       - FRONTEND_IP=$FRONTEND_IP     
     ports:
@@ -15,9 +15,19 @@ services:
     networks:
       - frontend_backend_network
     depends_on:
-      - backend
+      - backend-app
+
+  backend:
+    env_file:
+      - ./.env
+    image: backend-app
+    environment:
+      - BACKEND_IP=$BACKEND_IP
+    ports:
+      - $BACKEND_LOCAL_PORT:$BACKEND_DOCKER_PORT
+    networks:
+      - frontend_backend_network
 
 networks:
   frontend_backend_network:
-    external:
-      name: frontend_backend_network
+    driver: bridge
